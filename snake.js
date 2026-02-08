@@ -68,7 +68,27 @@ class Snake {
   draw() {
     for (let i = 0; i < this.segments.length; i++) {
       this.segments[i].drawSquare(this.color);
+      console.log(this.segments[i].col, this.segments[i].row)
     }
+  }
+
+  move(apple, game) {
+    const head = this.segments[0];
+    let newHead;
+    this.direction = this.nextDirection;
+
+    if (this.direction === "right") {
+      newHead = new Block(this.canvas, head.col + 1, head.row);
+    } else if (this.direction === "down") {
+      newHead = new Block(this.canvas, head.col, head.row + 1);
+    } else if (this.direction === "left") {
+      newHead = new Block(this.canvas, head.col - 1, head.row);
+    } else if (this.direction === "up") {
+      newHead = new Block(this.canvas, head.col, head.row - 1);
+    }
+
+    this.segments.unshift(newHead);
+    this.segments.pop();
   }
 }
 
@@ -120,14 +140,19 @@ class Game {
 
   go() {
     this.apple.draw();
+    this.snake.move(this.apple, this)
     this.snake.draw();
     this.drawScore();
+  }
+
+  start() {
+    game.drawBorder();
+    game.go();
   }
 }
 
 const game = new Game(canvas);
-game.drawBorder();
-game.go();
+game.start();
 
 // snake.draw();
 // const apple = new Apple(canvas);
