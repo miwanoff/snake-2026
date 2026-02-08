@@ -24,6 +24,8 @@ class Block {
   drawCircle(color = "green") {
     const centerX = this.col * this.blockSize + this.blockSize / 2;
     const centerY = this.row * this.blockSize + this.blockSize / 2;
+    console.log("Col1, Row1", this.col, this.row);
+    console.log("circle", centerX, centerY);
     this.context.fillStyle = color;
     this.circle(centerX, centerY, this.blockSize / 2);
   }
@@ -38,6 +40,15 @@ class Apple {
 
   draw() {
     this.block.drawCircle(this.color);
+  }
+
+  move() {
+    const widthInBlocks = this.canvas.width / this.block.blockSize; // 40
+    const heightInBlocks = this.canvas.height / this.block.blockSize; // 40
+    let randomCol = Math.floor(Math.random() * (widthInBlocks - 2)) + 1;
+    let randomRow = Math.floor(Math.random() * (heightInBlocks - 2)) + 1;
+    console.log("Col, Row", randomCol, randomRow);
+    this.block = new Block(this.canvas, randomCol, randomRow);
   }
 }
 
@@ -63,8 +74,10 @@ class Snake {
 
 const snake = new Snake(canvas);
 snake.draw();
-// const apple = new Apple(canvas);
-// apple.draw();
+const apple = new Apple(canvas);
+
+apple.move();
+apple.draw();
 
 // const block = new Block(canvas, 10, 20);
 // block.drawSquare();
