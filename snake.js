@@ -72,12 +72,68 @@ class Snake {
   }
 }
 
-const snake = new Snake(canvas);
-snake.draw();
-const apple = new Apple(canvas);
+class Game {
+  constructor(canvas, blockSize = 10) {
+    this.canvas = canvas;
+    this.context = canvas.getContext("2d");
+    this.score = 0;
+    this.directions = {
+      37: "left",
+      38: "up",
+      39: "right",
+      40: "down",
+    };
+    this.blockSize = blockSize;
+    this.apple = new Apple(canvas);
+    this.snake = new Snake(canvas);
+  }
 
-apple.move();
-apple.draw();
+  drawBorder() {
+    this.context.fillStyle = "Grey";
+    this.context.fillRect(0, 0, this.canvas.width, this.blockSize);
+    this.context.fillRect(
+      0,
+      this.canvas.height - this.blockSize,
+      this.canvas.width,
+      this.blockSize,
+    );
+    this.context.fillRect(0, 0, this.blockSize, this.canvas.height);
+    this.context.fillRect(
+      this.canvas.width - this.blockSize,
+      0,
+      this.blockSize,
+      this.canvas.height,
+    );
+  }
+
+  drawScore = function () {
+    this.context.font = "20px Courier";
+    this.context.fillStyle = "Black";
+    this.context.textAlign = "left";
+    this.context.textBaseline = "top";
+    this.context.fillText(
+      "Score: " + this.score,
+      this.blockSize,
+      this.blockSize,
+    );
+  };
+
+  go() {
+    this.apple.draw();
+    this.snake.draw();
+    this.drawScore();
+  }
+}
+
+const game = new Game(canvas);
+game.drawBorder();
+game.go();
+
+// snake.draw();
+// const apple = new Apple(canvas);
+
+// apple.move();
+// apple.draw();
 
 // const block = new Block(canvas, 10, 20);
 // block.drawSquare();
