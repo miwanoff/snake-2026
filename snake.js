@@ -47,7 +47,7 @@ class Apple {
     const heightInBlocks = this.canvas.height / this.block.blockSize; // 40
     let randomCol = Math.floor(Math.random() * (widthInBlocks - 2)) + 1;
     let randomRow = Math.floor(Math.random() * (heightInBlocks - 2)) + 1;
-    console.log("Col, Row", randomCol, randomRow);
+    // console.log("Col, Row", randomCol, randomRow);
     this.block = new Block(this.canvas, randomCol, randomRow);
   }
 }
@@ -68,7 +68,7 @@ class Snake {
   draw() {
     for (let i = 0; i < this.segments.length; i++) {
       this.segments[i].drawSquare(this.color);
-      console.log(this.segments[i].col, this.segments[i].row)
+      // console.log(this.segments[i].col, this.segments[i].row);
     }
   }
 
@@ -89,10 +89,12 @@ class Snake {
 
     this.segments.unshift(newHead);
     this.segments.pop();
+    console.log(this.segments);
   }
 }
 
 class Game {
+  intervalTimer;
   constructor(canvas, blockSize = 10) {
     this.canvas = canvas;
     this.context = canvas.getContext("2d");
@@ -139,15 +141,23 @@ class Game {
   };
 
   go() {
-    this.apple.draw();
-    this.snake.move(this.apple, this)
+    this.context.clearRect(
+      this.blockSize,
+      this.blockSize,
+      this.canvas.width - this.blockSize * 2,
+      this.canvas.height - this.blockSize * 2,
+    );
+    this.snake.move(this.apple, this);
     this.snake.draw();
+    this.apple.draw();
     this.drawScore();
   }
 
   start() {
     game.drawBorder();
-    game.go();
+    this.intervalTimer = setInterval(this.go.bind(this), 200);
+
+    //game.go();
   }
 }
 
