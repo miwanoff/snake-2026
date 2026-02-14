@@ -104,6 +104,29 @@ class Snake {
     }
     this.nextDirection = newDirection;
   }
+
+  checkCollision(head) {
+    const widthInBlocks = this.canvas.width / this.block.blockSize; // 40
+    const heightInBlocks = this.canvas.height / this.block.blockSize; // 40
+    const wallCollision = false;
+    const leftCollision = head.col === 0 ? true : false;
+    const rightCollision = head.col === widthInBlocks - 1 ? true : false;
+    const topCollision = head.row === 0 ? true : false;
+    const bottomCollision = head.row === heightInBlocks - 1 ? true : false;
+    // if (leftCollision || rightCollision || topCollision || bottomCollision) {
+    //   wallCollision = true;
+    // }
+    wallCollision =
+      leftCollision || rightCollision || topCollision || bottomCollision;
+    let selfCollision = false;
+    for (let i = 0; i < this.segments.length; i++) {
+      if (head.equal(this.segments[i])) {
+        selfCollision = true;
+      }
+    }
+
+    return wallCollision || selfCollision;
+  }
 }
 
 class Game {
