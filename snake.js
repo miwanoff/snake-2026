@@ -91,6 +91,19 @@ class Snake {
     this.segments.pop();
     console.log(this.segments);
   }
+
+  setNextDirection(newDirection) {
+    if (this.direction === "up" && newDirection == "down") {
+      return;
+    } else if (this.direction === "right" && newDirection == "left") {
+      return;
+    } else if (this.direction === "left" && newDirection == "right") {
+      return;
+    } else if (this.direction === "down" && newDirection == "up") {
+      return;
+    }
+    this.nextDirection = newDirection;
+  }
 }
 
 class Game {
@@ -156,7 +169,10 @@ class Game {
   start() {
     game.drawBorder();
     this.intervalTimer = setInterval(this.go.bind(this), 200);
-
+    addEventListener("keydown", (event) => {
+      const newDirection = this.directions[event.keyCode];
+      this.snake.setNextDirection(newDirection);
+    });
     //game.go();
   }
 }
