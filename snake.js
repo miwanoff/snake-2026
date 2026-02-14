@@ -95,8 +95,13 @@ class Snake {
       return;
     }
     this.segments.unshift(newHead);
-    this.segments.pop();
-    console.log(this.segments);
+    if (newHead.equal(apple.block)) {
+      apple.move();
+      game.score++;
+    } else {
+      this.segments.pop();
+    }
+    // console.log(this.segments);
   }
 
   setNextDirection(newDirection) {
