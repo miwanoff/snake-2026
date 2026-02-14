@@ -29,6 +29,10 @@ class Block {
     this.context.fillStyle = color;
     this.circle(centerX, centerY, this.blockSize / 2);
   }
+
+  equal(otherBlock) {
+    return this.col === otherBlock.col && this.row === otherBlock.row;
+  }
 }
 
 class Apple {
@@ -86,7 +90,10 @@ class Snake {
     } else if (this.direction === "up") {
       newHead = new Block(this.canvas, head.col, head.row - 1);
     }
-
+    if (this.checkCollision(newHead)) {
+      game.gameOver();
+      return;
+    }
     this.segments.unshift(newHead);
     this.segments.pop();
     console.log(this.segments);
@@ -106,9 +113,9 @@ class Snake {
   }
 
   checkCollision(head) {
-    const widthInBlocks = this.canvas.width / this.block.blockSize; // 40
-    const heightInBlocks = this.canvas.height / this.block.blockSize; // 40
-    const wallCollision = false;
+    const widthInBlocks = this.canvas.width / head.blockSize; // 40
+    const heightInBlocks = this.canvas.height / head.blockSize; // 40
+    let wallCollision = false;
     const leftCollision = head.col === 0 ? true : false;
     const rightCollision = head.col === widthInBlocks - 1 ? true : false;
     const topCollision = head.row === 0 ? true : false;
@@ -197,6 +204,19 @@ class Game {
       this.snake.setNextDirection(newDirection);
     });
     //game.go();
+  }
+
+  gameOver() {
+    clearInterval(this.intervalTimer);
+    this.context.font = "60px Courier";
+    this.context.fillStyle = "Black";
+    this.context.textAlign = "center";
+    this.context.textBaseline = "middle";
+    this.context.fillText(
+      "Game Over!",
+      this.canvas.width / 2,
+      this.canvas.height / 2,
+    );
   }
 }
 
